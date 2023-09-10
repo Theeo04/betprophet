@@ -21,8 +21,13 @@ const Odd = ({ title, competition }) => {
       })
       .then((data) => {
         const first10MatchesData = data.slice(0, 10).map((match) => {
-          // Define the drawOdds here because it's related to each match
-          const drawOdds = match.bookmakers[0].markets[0].outcomes[2].price;
+          const price = match.bookmakers[0].markets[0].outcomes[2];
+
+          if (price !== null && !isNaN(price)) {
+            const drawOdds = match.bookmakers[0].markets[0].outcomes[2].price;
+          } else {
+            console.log("Price is null or NaN. Handling the case here...");
+          }
 
           // Find the odds for the home and away teams based on their names
           const homeTeamOdds = findTeamOdds(match, match.home_team);

@@ -5,7 +5,7 @@ import Odd from "./Odds/Odd";
 const Menu = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedMenuItem, setSelectedMenuItem] = useState("Football");
+  const [selectedMenuItem, setSelectedMenuItem] = useState("Tennis");
 
   // Check the screen size and update the state
   const checkScreenWidth = () => {
@@ -31,10 +31,13 @@ const Menu = () => {
   };
 
   const renderComponentForMenuItem = () => {
+    console.log("Rendering component for:", selectedMenuItem);
     if (selectedMenuItem === "Football") {
       return <Odd title={"Football"} competition={"soccer_epl"} />;
     }
-    // Add similar conditionals for other menu items here
+    if (selectedMenuItem === "Tennis") {
+      return <Odd title={"Tennis"} competition={"tennis_atp_us_open"} />;
+    }
     return null; // Render nothing by default
   };
 
@@ -53,7 +56,12 @@ const Menu = () => {
             Football
           </button>
           <button class="menu--element w-full">Basketball</button>
-          <button class="menu--element w-full">Tennis</button>
+          <button
+            className="menu--element w-full"
+            onClick={() => handleMenuItemClick("Tennis")}
+          >
+            Tennis
+          </button>
           <button class="menu--element w-full">American Football</button>
           <button class="menu--element w-full">Box</button>
           <button class="menu--element w-full">Horse Racing</button>
@@ -65,15 +73,29 @@ const Menu = () => {
         <div
           className={`w-[330px] text-black border-r-2 border-b-2 border-gray-800 rounded-br-xl`}
         >
-          <div className="menu--element">Football</div>
-          <div className="menu--element">Basketball</div>
-          <div className="menu--element">Tennis</div>
-          <div className="menu--element">American Football</div>
-          <div className="menu--element">Box</div>
-          <div className="menu--element">Horse Racing</div>
-          <div className="menu--element">Slots</div>
-          <div className="menu--element">About Us</div>
-          <div className="menu--element">Contact Us</div>
+          <button
+            className="menu--element w-full text-left" // Add text-left class here
+            onClick={() => handleMenuItemClick("Football")}
+          >
+            Football
+          </button>
+          <button
+            className="menu--element w-full text-left" // Add text-left class here
+            onClick={() => handleMenuItemClick("Tennis")}
+          >
+            Tennis
+          </button>
+          <button className="menu--element w-full text-left">Basketball</button>
+          <button className="menu--element w-full text-left">
+            American Football
+          </button>
+          <button className="menu--element w-full text-left">Box</button>
+          <button className="menu--element w-full text-left">
+            Horse Racing
+          </button>
+          <button className="menu--element w-full text-left">Slots</button>
+          <button className="menu--element w-full text-left">About Us</button>
+          <button className="menu--element w-full text-left">Contact Us</button>
         </div>
       )}
       {isMobile && (

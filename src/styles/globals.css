@@ -8,6 +8,7 @@
 
 /* Base styles for .menu--element */
 .menu--element {
+  display: block;
   position: relative;
   overflow: hidden;
   color: #fff; /* Initial text color */
