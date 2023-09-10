@@ -23,13 +23,13 @@
 /* Hover styles for .menu--element */
 .menu--element:hover {
   color: #000; /* Text color on hover */
-  transform: translateX(10px); /* Move the element to the right on hover */
+  transform: translateX(5px); /* Move the element to the right on hover */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle shadow on hover */
   background-color: #8a2be2; /* Purple background color on hover */
+  cursor: pointer;
 }
 
 /* For mobile Menu */
 .full-screen-mobile {
   width: 100vw; /* 100% of the viewport width */
-  height: 100vh; /* 100% of the viewport height */
 }

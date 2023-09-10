@@ -1,6 +1,6 @@
 import Content from "@/components/Content";
 import Nav from "@/components/Nav";
-import SoccerOdds from "@/components/SoccerOdds";
+import SoccerOdds from "@/components/Odds/Odd";
 import React from "react";
 
 function index() {
