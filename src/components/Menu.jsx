@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BiFootball } from "react-icons/bi";
 import Odd from "./Odds/Odd";
+import OddTennis from "./Odds/OddNFL";
+import OddNFL from "./Odds/OddNFL";
 
 const Menu = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -31,12 +33,11 @@ const Menu = () => {
   };
 
   const renderComponentForMenuItem = () => {
-    console.log("Rendering component for:", selectedMenuItem);
     if (selectedMenuItem === "Football") {
       return <Odd title={"Football"} competition={"soccer_epl"} />;
     }
-    if (selectedMenuItem === "Tennis") {
-      return <Odd title={"Tennis"} competition={"tennis_atp_us_open"} />;
+    if (selectedMenuItem === "NFL") {
+      return <OddNFL />;
     }
     return null; // Render nothing by default
   };
@@ -56,13 +57,13 @@ const Menu = () => {
             Football
           </button>
           <button class="menu--element w-full">Basketball</button>
+
           <button
             className="menu--element w-full"
-            onClick={() => handleMenuItemClick("Tennis")}
+            onClick={() => handleMenuItemClick("American Football")}
           >
-            Tennis
+            American Footbal
           </button>
-          <button class="menu--element w-full">American Football</button>
           <button class="menu--element w-full">Box</button>
           <button class="menu--element w-full">Horse Racing</button>
           <button class="menu--element w-full">Slots</button>
@@ -81,14 +82,12 @@ const Menu = () => {
           </button>
           <button
             className="menu--element w-full text-left" // Add text-left class here
-            onClick={() => handleMenuItemClick("Tennis")}
+            onClick={() => handleMenuItemClick("NFL")}
           >
-            Tennis
+            NFL
           </button>
           <button className="menu--element w-full text-left">Basketball</button>
-          <button className="menu--element w-full text-left">
-            American Football
-          </button>
+          <button className="menu--element w-full text-left">NFL</button>
           <button className="menu--element w-full text-left">Box</button>
           <button className="menu--element w-full text-left">
             Horse Racing

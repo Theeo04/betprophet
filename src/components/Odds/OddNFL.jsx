@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-const Odd = ({ title, competition }) => {
+const OddNFL = ({ title, competition }) => {
   const apiKey = "75ce17a9cf119a89e5409978b746219e"; // Replace with your actual API key
   const baseUrl =
-    "https://api.the-odds-api.com/v4/sports/" +
-    competition +
-    "/odds/?apiKey=" +
+    "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/?apiKey=" +
     apiKey +
     "&regions=uk&markets=h2h,spreads&oddsFormat=american";
 
@@ -30,7 +28,6 @@ const Odd = ({ title, competition }) => {
             "competition:",
             data
           );
-          drawOdds = match.bookmakers[0].markets[0].outcomes[2].price;
 
           // Find the odds for the home and away teams based on their names
           const homeTeamOdds = findTeamOdds(match, match.home_team);
@@ -39,14 +36,12 @@ const Odd = ({ title, competition }) => {
           // Convert American odds to European odds
           const homeTeamEuropeanOdds = convertAmericanToEuropean(homeTeamOdds);
           const awayTeamEuropeanOdds = convertAmericanToEuropean(awayTeamOdds);
-          const drawEuropeanOdds = convertAmericanToEuropean(drawOdds);
 
           return {
             homeTeam: match.home_team,
             awayTeam: match.away_team,
             homeTeamOdds: homeTeamEuropeanOdds,
             awayTeamOdds: awayTeamEuropeanOdds,
-            drawOdds: drawEuropeanOdds,
           };
         });
         setFirst10Matches(first10MatchesData);
@@ -102,8 +97,11 @@ const Odd = ({ title, competition }) => {
                   {match.homeTeamOdds.toFixed(2)}
                 </p>
                 <p className="pl-[65px] pr-[65px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
-                  {match.drawOdds !== null ? match.drawOdds.toFixed(2) : "-"}
+                  {typeof match.drawOdds !== "undefined"
+                    ? match.drawOdds.toFixed(2)
+                    : "-"}
                 </p>
+
                 <p className="lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
                   {match.awayTeamOdds.toFixed(2)}
                 </p>
@@ -116,10 +114,4 @@ const Odd = ({ title, competition }) => {
   );
 };
 
-export default Odd;
-
-{
-  /* <p className="pr-[10px]lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
-  {isNaN(match.drawOdds) ? "-" : match.drawOdds.toFixed(2)}
-</p>; */
-}
+export default OddNFL;
