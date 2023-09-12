@@ -56,7 +56,7 @@ const Menu = () => {
           >
             Football
           </button>
-          <button class="menu--element w-full">Basketball</button>
+          <button className="menu--element w-full">Basketball</button>
 
           <button
             className="menu--element w-full"
@@ -64,11 +64,11 @@ const Menu = () => {
           >
             American Footbal
           </button>
-          <button class="menu--element w-full">Box</button>
-          <button class="menu--element w-full">Horse Racing</button>
-          <button class="menu--element w-full">Slots</button>
-          <button class="menu--element w-full">About Us</button>
-          <button class="menu--element w-full">Contact Us</button>
+          <button className="menu--element w-full">Box</button>
+          <button className="menu--element w-full">Horse Racing</button>
+          <button className="menu--element w-full">Slots</button>
+          <button className="menu--element w-full">About Us</button>
+          <button className="menu--element w-full">Contact Us</button>
         </div>
       ) : (
         <div

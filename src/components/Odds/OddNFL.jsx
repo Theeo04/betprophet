@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const OddNFL = ({ title, competition }) => {
+const OddNFL = ({ title }) => {
   const apiKey = "75ce17a9cf119a89e5409978b746219e"; // Replace with your actual API key
   const baseUrl =
     "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/?apiKey=" +
@@ -8,6 +8,10 @@ const OddNFL = ({ title, competition }) => {
     "&regions=uk&markets=h2h,spreads&oddsFormat=american";
 
   const [first10Matches, setFirst10Matches] = useState([]);
+  const [yourBet, setYourBet] = useState(() => {
+    const storedData = localStorage.getItem("yourBet");
+    return storedData ? JSON.parse(storedData) : [];
+  });
 
   useEffect(() => {
     fetch(baseUrl)
@@ -20,14 +24,7 @@ const OddNFL = ({ title, competition }) => {
       .then((data) => {
         const first10MatchesData = data.slice(0, 10).map((match) => {
           const price = match.bookmakers[0].markets[0].outcomes[2];
-          let drawOdds; // Declare it here
-          // Inside the .then((data) => { ... }) block
-          console.log(
-            "API response data for",
-            competition,
-            "competition:",
-            data
-          );
+          let drawOdds;
 
           // Find the odds for the home and away teams based on their names
           const homeTeamOdds = findTeamOdds(match, match.home_team);
@@ -52,12 +49,39 @@ const OddNFL = ({ title, competition }) => {
       });
   }, []);
 
+  const updateYourBet = (newBet) => {
+    const updatedBetArray = [...yourBet, newBet];
+    setYourBet(updatedBetArray);
+    localStorage.setItem("yourBet", JSON.stringify(updatedBetArray));
+  };
+
   // Function to find team odds by name
   const findTeamOdds = (match, teamName) => {
     const outcome = match.bookmakers[0].markets[0].outcomes.find(
       (outcome) => outcome.name === teamName
     );
     return outcome ? outcome.price : null;
+  };
+
+  const handleClick = (event, match, teamOdds) => {
+    // Determine if the clicked odds belong to '1', 'X', or '2'
+    let oddChoosed =
+      match.homeTeamOdds === teamOdds
+        ? "1"
+        : match.drawOdds === teamOdds
+        ? "X"
+        : "2";
+
+    // Create the updated 'yourBet' object
+    const newYourBet = {
+      home: match.homeTeam,
+      away: match.awayTeam,
+      oddMatch: teamOdds,
+      oddChoosed: oddChoosed,
+    };
+
+    // Update the 'yourBet' object in state and localStorage
+    updateYourBet(newYourBet);
   };
 
   // Function to convert American odds to European odds
@@ -84,7 +108,7 @@ const OddNFL = ({ title, competition }) => {
               <p className="ml-3 lg:text-[20px] text-[12px] md:text-[16px]">
                 {match.homeTeam}
               </p>
-              <p className="pl-2 pr-2 lg:text-[20px] text-[12px] md:text-[16px]">
+              <p className="pl-2 pr-2 lg:text-[20px] text-[12px] md:text-[16px] ">
                 -
               </p>
               <p className="lg:text-[20px] text-[12px] md:text-[16px]">
@@ -93,16 +117,29 @@ const OddNFL = ({ title, competition }) => {
             </div>
             <div className=" ">
               <div className="flex w-[0px] mt-1">
-                <p className="pl-[65px] md:pl-[90px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
+                <p
+                  className="pl-[65px] md:pl-[90px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer"
+                  onClick={(event) =>
+                    handleClick(event, match, match.homeTeamOdds)
+                  }
+                >
                   {match.homeTeamOdds.toFixed(2)}
                 </p>
-                <p className="pl-[65px] pr-[65px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
+                <p
+                  className="pl-[65px] pr-[65px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer"
+                  onClick={(event) => handleClick(event, match, match.drawOdds)}
+                >
                   {typeof match.drawOdds !== "undefined"
                     ? match.drawOdds.toFixed(2)
                     : "-"}
                 </p>
 
-                <p className="lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
+                <p
+                  className="lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer"
+                  onClick={(event) =>
+                    handleClick(event, match, match.awayTeamOdds)
+                  }
+                >
                   {match.awayTeamOdds.toFixed(2)}
                 </p>
               </div>
