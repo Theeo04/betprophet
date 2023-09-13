@@ -5,7 +5,7 @@ function Content() {
   return (
     // All in a flex
     <div>
-      {/* <Menu /> */}
+      <Menu />
       {/* <Odds/> */}
       {/* <News/> */}
     </div>
