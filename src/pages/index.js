@@ -1,18 +1,28 @@
+import React, { useState } from "react";
 import Content from "@/components/Content";
 import Nav from "@/components/Nav";
-import SoccerOdds from "@/components/Odds/Odd";
 import PlacedBet from "@/components/PlacedBet";
-import React from "react";
+import GrayBck from "@/components/GrayBck";
 
-function index() {
+function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Toggle the isOpen state
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div>
-      <Nav />
-      <Content />
-      <PlacedBet />
+      <div className={isOpen ? "opacity-30 " : ""}>
+        {isOpen && <GrayBck />}
+        <Nav />
+        <Content />
+      </div>
+      <PlacedBet isOpen={isOpen} toggleOpen={toggleOpen} />
       {/* <AskAi /> */}
     </div>
   );
 }
 
-export default index;
+export default App;

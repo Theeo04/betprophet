@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import BettingContent from "./BettingContent";
 
-function PlacedBet() {
-  const [isOpen, setIsOpen] = useState(false);
+function PlacedBet({ isOpen, toggleOpen }) {
   const [betts, setBetts] = useState([]);
   const [totalBet, setTotalBet] = useState(1);
   const [uniqueBetts, setUniqueBetts] = useState([]);
-
-  const toggleDiv = () => {
-    setIsOpen(!isOpen);
-  };
 
   useEffect(() => {
     // Function to get bets from localStorage
@@ -60,14 +55,13 @@ function PlacedBet() {
     setTotalBet(product);
   }, [uniqueBetts]);
 
-  // Render the component with real-time data
   return (
     <div>
       {!isOpen ? (
         // When it's closed
         <div
-          onClick={toggleDiv}
-          className="fixed bottom-0 right-0 h-[80px] w-[340px] bg-purple-600 mr-5 rounded-t-xl flex items-center justify-center cursor-pointer"
+          onClick={toggleOpen}
+          className="z-20 fixed bottom-0 right-0 h-[80px] w-[340px] bg-purple-600 mr-5 rounded-t-xl flex items-center justify-center cursor-pointer"
         >
           <p className="text-white bg-purple-600 font-[500] text-[12px]">
             Matches: {uniqueBetts.length} Total Odd: {totalBet.toFixed(2)}
@@ -75,11 +69,11 @@ function PlacedBet() {
         </div>
       ) : (
         // When it's open, render the div with content
-        <div>
-          <div className="fixed bottom-0 right-0 h-[520px] w-[340px] bg-purple-600 mr-5 rounded-t-xl flex flex-col">
+        <div className="z-50">
+          <div className="fixed bottom-0 right-0 h-[520px] w-[340px] bg-purple-600 mr-5 rounded-t-xl flex flex-col ">
             <div
               className="flex items-center justify-center absolute top-0 bottom-0 right-0 h-[80px] w-[340px] bg-purple-600 rounded-t-xl border-b border-gray-300 cursor-pointer"
-              onClick={toggleDiv}
+              onClick={toggleOpen}
             >
               <p className="text-white bg-purple-600 font-[500] text-[12px]">
                 Matches: {uniqueBetts.length} Total Odd: {totalBet.toFixed(2)}

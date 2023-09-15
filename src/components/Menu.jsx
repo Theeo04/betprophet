@@ -46,7 +46,7 @@ const Menu = () => {
     <div className="flex">
       {isMobile ? (
         <div
-          className={`w-full bg-black text-white flex flex-col items-center z-10 ${
+          className={`w-full bg-black text-white flex flex-col items-center ${
             isMenuOpen ? "block full-height-mobile" : "hidden"
           }`}
         >
