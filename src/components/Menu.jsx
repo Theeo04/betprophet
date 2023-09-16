@@ -37,7 +37,7 @@ const Menu = () => {
       return <Odd title={"Football"} competition={"soccer_epl"} />;
     }
     if (selectedMenuItem === "NFL") {
-      return <OddNFL />;
+      return <OddNFL title={"NFL"} />;
     }
     return null; // Render nothing by default
   };
@@ -60,9 +60,9 @@ const Menu = () => {
 
           <button
             className="menu--element w-full"
-            onClick={() => handleMenuItemClick("American Football")}
+            onClick={() => handleMenuItemClick("NFL")}
           >
-            American Footbal
+            NFL
           </button>
           <button className="menu--element w-full">Box</button>
           <button className="menu--element w-full">Horse Racing</button>

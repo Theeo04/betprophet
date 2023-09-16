@@ -1,10 +1,40 @@
 import React, { useEffect, useState } from "react";
 import BettingContent from "./BettingContent";
+import { createClient } from "@supabase/supabase-js";
 
 function PlacedBet({ isOpen, toggleOpen }) {
   const [betts, setBetts] = useState([]);
   const [totalBet, setTotalBet] = useState(1);
   const [uniqueBetts, setUniqueBetts] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [isInvalid, setIsInvalid] = useState(false);
+
+  // Your Supabase initialization code goes here
+  const supabase = createClient(
+    "https://bzdaeaklmnwmwakandpb.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6ZGFlYWtsbW53bXdha2FuZHBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NzgwNzcsImV4cCI6MjAxMDQ1NDA3N30.VyxPEA9hVf0kuFrlsoyilSltgvEMqI-oIx6XaTKL5Pw"
+  );
+
+  // Function to update data on Supabase
+  async function updateUniqueMatches() {
+    try {
+      // Define the table name and the updated data (uniqueMatches)
+      const tableName = "PlacedBet"; // Replace with your table name
+
+      // Use the upsert method to insert or update data with a combination of fields as a unique identifier
+      const { data, error } = await supabase
+        .from(tableName)
+        .upsert(uniqueBetts);
+
+      if (error) {
+        console.error("Error updating data:", error.message);
+      } else {
+        console.log("Data updated successfully:", data);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  }
 
   useEffect(() => {
     // Function to get bets from localStorage
@@ -37,10 +67,14 @@ function PlacedBet({ isOpen, toggleOpen }) {
     const uniqueMatches = [];
     betts.forEach((match) => {
       if (
-        !uniqueMatches.some((uniqueMatch) => uniqueMatch.home === match.home)
+        !uniqueMatches.some(
+          (uniqueMatch) =>
+            uniqueMatch.home === match.home &&
+            uniqueMatch.away === match.away &&
+            uniqueMatch.date === match.date
+        )
       ) {
         uniqueMatches.push(match);
-        // Here, you can delete the object from localStorage if needed
       }
     });
     setUniqueBetts(uniqueMatches);
@@ -53,7 +87,35 @@ function PlacedBet({ isOpen, toggleOpen }) {
     );
 
     setTotalBet(product);
+
+    // Update uniqueMatches on Supabase when uniqueBetts changes
+    updateUniqueMatches();
   }, [uniqueBetts]);
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+
+    if (/^\d*$/.test(value)) {
+      setInputValue(value);
+      const numberValue = parseInt(value, 10);
+      if (numberValue >= 1 && numberValue <= 100) {
+        setIsInvalid(false);
+      } else {
+        setIsInvalid(true);
+      }
+    } else {
+      setIsInvalid(true);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (isInvalid) {
+      alert("Invalid input. Please enter a number between 1 and 100.");
+      setInputValue("invalid");
+    }
+  };
 
   return (
     <div>
@@ -80,7 +142,27 @@ function PlacedBet({ isOpen, toggleOpen }) {
               </p>
             </div>
             <BettingContent totalBet={totalBet} />{" "}
-            {/* Pass totalBet as a prop */}
+            {/* Input The Amount Of Credit That User Play */}
+            <div className="flex justify-center">
+              <form onSubmit={handleSubmit} className="fixed bottom-3">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  placeholder="   Credits"
+                  className={`w-[160px] rounded-xl ${
+                    isInvalid ? "border-2 text-red-600 border-red-600" : ""
+                  }`}
+                />
+                <button
+                  className="ml-3 text-white text-[20px] font-[400] animate-bounce"
+                  type="submit"
+                >
+                  {" "}
+                  Place Bet!
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}
