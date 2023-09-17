@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PiUserCircle } from "react-icons/pi";
 import { AiOutlineDownCircle, AiOutlineLogin } from "react-icons/ai";
-import GrayBck from "./GrayBck";
+import { supabase } from "../../supabase";
+import { useRouter } from "next/router";
 
-function NavWithSignUp() {
-  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+function NavWithLogIn() {
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
 
-  const toggleSignUpModal = () => {
-    setIsSignUpModalOpen(!isSignUpModalOpen);
+  const router = useRouter();
+
+  const toggleSignInModal = () => {
+    setIsSignInModalOpen(!isSignInModalOpen);
   };
 
   const modalRef = useRef();
@@ -18,11 +22,11 @@ function NavWithSignUp() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsSignUpModalOpen(false);
+        setIsSignInModalOpen(false);
       }
     }
 
-    if (isSignUpModalOpen) {
+    if (isSignInModalOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -31,20 +35,27 @@ function NavWithSignUp() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isSignUpModalOpen]);
+  }, [isSignInModalOpen]);
 
-  const handleSignUp = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
 
     try {
-      // Add your sign-up logic here using email and password state values
-      console.log("Signing up with email:", email);
-      console.log("Signing up with password:", password);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      // Close the modal after successful sign-up
-      setIsSignUpModalOpen(false);
+      if (error) {
+        console.error("Error signing in:", error.message);
+      } else if (data) {
+        console.log("User has logged in:", data);
+        setUser(data);
+        // Close the modal after successful sign-in
+        setIsSignInModalOpen(false);
+      }
     } catch (error) {
-      console.error("Error signing up:", error.message);
+      console.error("Error signing in:", error.message);
     }
   };
 
@@ -67,9 +78,14 @@ function NavWithSignUp() {
             <div className="flex">
               <button
                 className="text-white text-[17px] font-[500] lg:text-[23px]"
-                onClick={toggleSignUpModal}
+                onClick={() => {
+                  toggleSignInModal(); // Always toggle the modal
+                  if (user) {
+                    router.push("/userProfile"); // If the user is authenticated, navigate to "/nume pagina"
+                  }
+                }}
               >
-                User
+                {user ? user.user.email : "User"}
               </button>
               <PiUserCircle className="text-white mt-[19px] ml-[5px] text-[22px] lg:text-[27px] lg:mt-[28px] lg:ml-2" />
             </div>
@@ -83,14 +99,14 @@ function NavWithSignUp() {
           </div>
         </div>
       </div>
-      {isSignUpModalOpen && (
-        <div className="absolute popup">
+      {isSignInModalOpen && (
+        <div className={`absolute ml-[1100px] ${user ? "hidden" : ""}`}>
           <div ref={modalRef} className="popup-content">
-            <button className="close-modal" onClick={toggleSignUpModal}>
+            <button className="close-modal" onClick={toggleSignInModal}>
               Close
             </button>
-            <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
-            <form onSubmit={handleSignUp}>
+            <h2 className="text-2xl font-bold mb-4">Log In</h2>
+            <form onSubmit={handleSignIn}>
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -125,15 +141,15 @@ function NavWithSignUp() {
                 type="submit"
                 className="w-full p-2 mt-4 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
-                Sign Up
+                Sign In
               </button>
             </form>
           </div>
-          {isSignUpModalOpen}
+          {isSignInModalOpen}
         </div>
       )}
     </div>
   );
 }
 
-export default NavWithSignUp;
+export default NavWithLogIn;
