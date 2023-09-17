@@ -4,7 +4,7 @@ import { AiOutlineDownCircle, AiOutlineLogin } from "react-icons/ai";
 import { supabase } from "../../supabase";
 import { useRouter } from "next/router";
 
-function NavWithLogIn() {
+function Nav() {
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -152,4 +152,4 @@ function NavWithLogIn() {
   );
 }
 
-export default NavWithLogIn;
+export default Nav;
