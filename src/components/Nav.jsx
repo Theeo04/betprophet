@@ -75,7 +75,7 @@ function Nav() {
               <AiOutlineDownCircle className="text-white mt-[20px] ml-[5px] text-[19px] lg:text-[23px] lg:mt-[30px] lg:ml-2" />
             </div>
 
-            <div className="flex">
+            <div className="flex ">
               <button
                 className="text-white text-[17px] font-[500] lg:text-[23px]"
                 onClick={() => {
@@ -92,9 +92,13 @@ function Nav() {
 
             <div className="flex">
               <button className="text-white text-[17px] font-[500] lg:text-[23px] ">
-                Register
+                {user ? "" : "User"}
               </button>
-              <AiOutlineLogin className="text-white mt-[20px] ml-[5px] text-[19px] lg:text-[23px] lg:mt-[30px] lg:ml-2" />
+              {user ? (
+                ""
+              ) : (
+                <AiOutlineLogin className="text-white mt-[20px] ml-[5px] text-[19px] lg:text-[23px] lg:mt-[30px] lg:ml-2" />
+              )}
             </div>
           </div>
         </div>

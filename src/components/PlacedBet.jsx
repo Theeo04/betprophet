@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import BettingContent from "./BettingContent";
 import { createClient } from "@supabase/supabase-js";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { db, storage } from "../../firebase";
 
 function PlacedBet({ isOpen, toggleOpen }) {
   const [betts, setBetts] = useState([]);
@@ -9,11 +12,33 @@ function PlacedBet({ isOpen, toggleOpen }) {
   const [inputValue, setInputValue] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
 
+  // const allBetts = useRef(null);
+  // const betSum = useRef(null);
+
   // Your Supabase initialization code goes here
   const supabase = createClient(
     "https://bzdaeaklmnwmwakandpb.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6ZGFlYWtsbW53bXdha2FuZHBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NzgwNzcsImV4cCI6MjAxMDQ1NDA3N30.VyxPEA9hVf0kuFrlsoyilSltgvEMqI-oIx6XaTKL5Pw"
   );
+
+  //To get the User Profile Data
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser(); // Destructure user data
+        setUser(user);
+        console.log(user);
+      } catch (error) {
+        console.error("Error fetching user:", error.message);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   // Function to update data on Supabase
   async function updateUniqueMatches() {
@@ -117,6 +142,27 @@ function PlacedBet({ isOpen, toggleOpen }) {
     }
   };
 
+  console.log(uniqueBetts);
+
+  //Create a post with User UID =>
+  const sendBet = async () => {
+    try {
+      const dataToAdd = {
+        allMatches: uniqueBetts,
+        bet: inputValue,
+      };
+
+      const docRef = await addDoc(
+        collection(db, `${user.id}`, "4aDmS6k8f4zEmIp7U3Sx"),
+        dataToAdd
+      );
+
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
   return (
     <div>
       {!isOpen ? (
@@ -157,8 +203,8 @@ function PlacedBet({ isOpen, toggleOpen }) {
                 <button
                   className="ml-3 text-white text-[20px] font-[400] animate-bounce"
                   type="submit"
+                  onClick={sendBet}
                 >
-                  {" "}
                   Place Bet!
                 </button>
               </form>

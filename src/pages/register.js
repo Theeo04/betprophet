@@ -27,7 +27,7 @@ export default function SignUpForm() {
 
   // ml-[1170px]
   return (
-    <div ref={modalRef} className="absolute popup z-50">
+    <div className="absolute popup z-50">
       <div className="bg-white p-4 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
         <form onSubmit={handleSubmit}>
