@@ -62,7 +62,7 @@ function Nav() {
   return (
     <div>
       <div>
-        <div className="flex space-x-[120px] md:space-x-[240px] lg:space-x-[400px] xl:space-x-[820px] border-b border-gray-800">
+        <div className="flex space-x-[220px] md:space-x-[450px] lg:space-x-[530px] xl:space-x-[860px] border-b border-gray-800">
           <img
             src="logo.png"
             className="w-[180px] h-auto ml-11 mt-1 lg:w-[250px]"

@@ -150,12 +150,10 @@ function PlacedBet({ isOpen, toggleOpen }) {
       const dataToAdd = {
         allMatches: uniqueBetts,
         bet: inputValue,
+        odd: totalBet.toFixed(2),
       };
 
-      const docRef = await addDoc(
-        collection(db, `${user.id}`, "4aDmS6k8f4zEmIp7U3Sx"),
-        dataToAdd
-      );
+      const docRef = await addDoc(collection(db, `${user.id}`), dataToAdd);
 
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {

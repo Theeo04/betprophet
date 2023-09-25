@@ -11,21 +11,21 @@ body {
   display: block;
   position: relative;
   overflow: hidden;
-  color: #fff; /* Initial text color */
-  padding-left: 60px; /* Left padding */
+  color: #fff;
+  padding-left: 60px;
   font-size: 23px;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: transparent; /* Initial background color is transparent */
+  background-color: transparent;
   transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
 /* Hover styles for .menu--element */
 .menu--element:hover {
-  color: #000; /* Text color on hover */
-  transform: translateX(5px); /* Move the element to the right on hover */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle shadow on hover */
-  background-color: #8a2be2; /* Purple background color on hover */
+  color: #000;
+  transform: translateX(5px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background-color: #8a2be2;
   cursor: pointer;
 }
 
