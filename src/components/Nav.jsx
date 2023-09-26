@@ -62,7 +62,7 @@ function Nav() {
   return (
     <div>
       <div>
-        <div className="flex space-x-[220px] md:space-x-[450px] lg:space-x-[530px] xl:space-x-[860px] border-b border-gray-800">
+        <div className="flex space-x-[220px] 2xl:space-x-[960px] md:space-x-[450px] lg:space-x-[530px] xl:space-x-[860px] border-b border-gray-800">
           <img
             src="logo.png"
             className="w-[180px] h-auto ml-11 mt-1 lg:w-[250px]"
@@ -85,14 +85,14 @@ function Nav() {
                   }
                 }}
               >
-                {user ? user.user.email : "User"}
+                {user ? user.user.email : "Log In"}
               </button>
               <PiUserCircle className="text-white mt-[19px] ml-[5px] text-[22px] lg:text-[27px] lg:mt-[28px] lg:ml-2" />
             </div>
 
             <div className="flex">
               <button className="text-white text-[17px] font-[500] lg:text-[23px] ">
-                {user ? "" : "User"}
+                {user ? "" : "Register"}
               </button>
               {user ? (
                 ""
