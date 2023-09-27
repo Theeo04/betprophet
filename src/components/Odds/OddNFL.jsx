@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const OddNFL = ({ title }) => {
-  const apiKey = "75ce17a9cf119a89e5409978b746219e"; // Replace with your actual API key
+  const apiKey = "82d68d59aa3c60d604773dfc00eb28d7"; // Replace with your actual API key
   const baseUrl =
     "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds/?apiKey=" +
     apiKey +

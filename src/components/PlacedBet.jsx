@@ -113,7 +113,6 @@ function PlacedBet({ isOpen, toggleOpen }) {
 
     setTotalBet(product);
 
-    // Update uniqueMatches on Supabase when uniqueBetts changes
     updateUniqueMatches();
   }, [uniqueBetts]);
 

@@ -67,7 +67,7 @@ function UserProfile() {
         console.error("Error deleting user:", error);
       } else {
         console.log("User deleted successfully:", data);
-        // Redirect to a confirmation page or perform any necessary actions
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -82,7 +82,7 @@ function UserProfile() {
         console.error("Error logging out user:", error);
       } else {
         console.log("User logged out successfully");
-        // Redirect to a confirmation page or perform any necessary actions
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error logging out user:", error);
@@ -101,11 +101,11 @@ function UserProfile() {
   return (
     <div className="text-white">
       {/* Navbar */}
-      <div className="mt-4 flex space-x-[200px] md:space-x-[340px] lg:space-x-[530px] xl:space-x-[860px] 2xl:border-b pb-5">
+      <div className="mt-4 flex space-x-[200px] md:space-x-[340px] lg:space-x-[530px] xl:space-x-[600px] 2xl:border-b pb-5">
         <div className="flex ml-5 mt-1">
           <AiOutlineHome
             onClick={() => router.push("/")}
-            className="text-[40px] hover:pointer"
+            className="text-[40px] hover:cursor-pointer"
           />
           <div className="ml-5 text-[30px] font-[500]">{user?.email}</div>
         </div>
@@ -138,7 +138,7 @@ function UserProfile() {
             {posts.map((item, index) => (
               <div key={index} className="flex">
                 <div>
-                  <li className="w-[400px] h-[200px] bg-purple-500 rounded-2xl flex flex-col mt-[60px]">
+                  <li className="w-[400px] h-[250px] bg-purple-500 rounded-2xl flex flex-col space-y-[8px] mt-[60px] mb-[100px]">
                     <p className="text-[25px] font-[500] pb-1 pl-5 pt-1">
                       Credits Placed:{" "}
                       <span className="ml-[70px]"> {item.data.bet} </span>
@@ -165,7 +165,7 @@ function UserProfile() {
                       onClick={() => {
                         showMoreDetails(item);
                       }}
-                      className="bottom-0 right-0 bg-purple-600 text-[25px] font-[500] text-white p-2 flex justify-center"
+                      className="bottom-0 right-0 bg-purple-600 text-[25px] font-[500] text-white p-2 flex justify-center mt-[30px]"
                     >
                       Show my bet!{" "}
                       <span className="mt-[6px] ml-2 text-[28px]">
@@ -176,39 +176,45 @@ function UserProfile() {
                 </div>
                 <div>
                   {selectedItem === item && (
-                    <div className="flex flex-col justify-center bg-purple-500 pr-5 ml-[10px] w-[500px] lg:2xl:ml-[30px] lg:w-[700px] xl:ml-[130px]">
-                      <p className="flex justify-center mb-4 text-[27px] font-[500] lg:text-[30px] ">
-                        Total games: {selectedItem.data.allMatches.length}
-                      </p>
+                    <div className="flex rounded-2xl mt-[60px] flex-col justify-center bg-purple-500 pr-5 ml-[10px] w-[500px] lg:2xl:ml-[30px] lg:w-[700px] xl:ml-[130px]">
                       <ul>
-                        {selectedItem.data.allMatches.map(
-                          (match, matchIndex) => (
-                            <li className="flex mb-3" key={matchIndex}>
-                              <p className="ml-2 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] lg:ml-3">
-                                {match.home}
-                              </p>
-                              <p className="ml-2 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] lg:ml-3">
-                                vs
-                              </p>
-                              <p className="ml-2 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] lg:ml-3">
-                                {match.away}
-                              </p>
-                              <p className="ml-2 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] lg:ml-3">
-                                {match.oddChoosed}:
-                              </p>
-                              <p className="ml-1 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] text-black">
-                                {match.oddMatch.toFixed(2)}
-                              </p>
-                            </li>
-                          )
+                        {selectedItem === item && (
+                          <div className=" flex flex-col justify-center bg-purple-500 pr-5 ml-[10px] w-[500px] lg:2xl:ml-[30px] lg:w-[700px] xl:ml-[130px]">
+                            <p className="flex justify-center mb-4 text-[27px] font-[500] lg:text-[30px] ">
+                              Total games: {selectedItem.data.allMatches.length}
+                            </p>
+                            <ul>
+                              {selectedItem.data.allMatches.map(
+                                (match, matchIndex) => (
+                                  <li className="flex mb-3" key={matchIndex}>
+                                    <p className="ml-2 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] lg:ml-3">
+                                      {match.home}
+                                    </p>
+                                    <p className="ml-2 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] lg:ml-3">
+                                      vs
+                                    </p>
+                                    <p className="ml-2 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] lg:ml-3">
+                                      {match.away}
+                                    </p>
+                                    <p className="ml-2 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] lg:ml-3">
+                                      {match.oddChoosed}:
+                                    </p>
+                                    <p className="ml-1 text-[20px] 2xl:text-[22px] 2xl:ml-7 font-[500] lg:text-[30px] text-black">
+                                      {match.oddMatch.toFixed(2)}
+                                    </p>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                            <button
+                              className="text-[25px] font-[500] hover:text-black mt-4 bg-purple-500 pb-1 pt-1"
+                              onClick={closeMoreDetails}
+                            >
+                              Close
+                            </button>
+                          </div>
                         )}
                       </ul>
-                      <button
-                        className="text-[25px] font-[500] hover:text-black mt-4"
-                        onClick={closeMoreDetails}
-                      >
-                        Close
-                      </button>
                     </div>
                   )}
                 </div>

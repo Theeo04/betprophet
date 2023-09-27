@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 
 const Odd = ({ title, competition }) => {
-  const apiKey = "75ce17a9cf119a89e5409978b746219e"; // Replace with your actual API key
-  const baseUrl =
-    "https://api.the-odds-api.com/v4/sports/" +
-    competition +
-    "/odds/?apiKey=" +
-    apiKey +
-    "&regions=uk&markets=h2h,spreads&oddsFormat=american";
+  const apiKey = "82d68d59aa3c60d604773dfc00eb28d7"; // Replace with your actual API key
+  const baseUrl = `https://api.the-odds-api.com/v4/sports/${competition}/odds/?apiKey=${apiKey}&regions=uk&markets=h2h,spreads&oddsFormat=american`;
 
   const [first10Matches, setFirst10Matches] = useState([]);
+  const [yourBet, setYourBet] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("yourBet");
+      return storedData ? JSON.parse(storedData) : [];
+    } else {
+      return [];
+    }
+  });
 
   useEffect(() => {
     fetch(baseUrl)
@@ -21,20 +24,16 @@ const Odd = ({ title, competition }) => {
       })
       .then((data) => {
         const first10MatchesData = data.slice(0, 10).map((match) => {
-          const price = match.bookmakers[0].markets[0].outcomes[2];
           let drawOdds; // Declare it here
-          // Inside the .then((data) => { ... }) block
-          console.log(
-            "API response data for",
-            competition,
-            "competition:",
-            data
-          );
-          drawOdds = match.bookmakers[0].markets[0].outcomes[2].price;
 
           // Find the odds for the home and away teams based on their names
           const homeTeamOdds = findTeamOdds(match, match.home_team);
           const awayTeamOdds = findTeamOdds(match, match.away_team);
+
+          // Check if the draw outcome exists
+          if (match.bookmakers[0].markets[0].outcomes.length >= 3) {
+            drawOdds = match.bookmakers[0].markets[0].outcomes[2].price;
+          }
 
           // Convert American odds to European odds
           const homeTeamEuropeanOdds = convertAmericanToEuropean(homeTeamOdds);
@@ -53,9 +52,15 @@ const Odd = ({ title, competition }) => {
         console.log(first10Matches);
       })
       .catch((error) => {
-        console.error("Error fetching soccer odds:", error);
+        console.error("Error fetching odds:", error);
       });
-  }, []);
+  }, [baseUrl]);
+
+  const updateYourBet = (newBet) => {
+    const updatedBetArray = [...yourBet, newBet];
+    setYourBet(updatedBetArray);
+    localStorage.setItem("yourBet", JSON.stringify(updatedBetArray));
+  };
 
   // Function to find team odds by name
   const findTeamOdds = (match, teamName) => {
@@ -63,6 +68,27 @@ const Odd = ({ title, competition }) => {
       (outcome) => outcome.name === teamName
     );
     return outcome ? outcome.price : null;
+  };
+
+  const handleClick = (event, match, teamOdds) => {
+    // Determine if the clicked odds belong to '1', 'X', or '2'
+    let oddChoosed =
+      match.homeTeamOdds === teamOdds
+        ? "1"
+        : match.drawOdds === teamOdds
+        ? "X"
+        : "2";
+
+    // Create the updated 'yourBet' object
+    const newYourBet = {
+      home: match.homeTeam,
+      away: match.awayTeam,
+      oddMatch: teamOdds,
+      oddChoosed: oddChoosed,
+    };
+
+    // Update the 'yourBet' object in state and localStorage
+    updateYourBet(newYourBet);
   };
 
   // Function to convert American odds to European odds
@@ -89,7 +115,7 @@ const Odd = ({ title, competition }) => {
               <p className="ml-3 lg:text-[20px] text-[12px] md:text-[16px]">
                 {match.homeTeam}
               </p>
-              <p className="pl-2 pr-2 lg:text-[20px] text-[12px] md:text-[16px]">
+              <p className="pl-2 pr-2 lg:text-[20px] text-[12px] md:text-[16px] ">
                 -
               </p>
               <p className="lg:text-[20px] text-[12px] md:text-[16px]">
@@ -98,13 +124,30 @@ const Odd = ({ title, competition }) => {
             </div>
             <div className=" ">
               <div className="flex w-[0px] mt-1">
-                <p className="pl-[65px] md:pl-[90px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
+                <p
+                  className="pl-[65px] md:pl-[90px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer"
+                  onClick={(event) =>
+                    handleClick(event, match, match.homeTeamOdds)
+                  }
+                >
                   {match.homeTeamOdds.toFixed(2)}
                 </p>
-                <p className="pl-[65px] pr-[65px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
+                <p
+                  className="pl-[65px] pr-[65px] lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer"
+                  onClick={(event) =>
+                    match.drawOdds
+                      ? handleClick(event, match, match.drawOdds)
+                      : null
+                  }
+                >
                   {match.drawOdds !== null ? match.drawOdds.toFixed(2) : "-"}
                 </p>
-                <p className="lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
+                <p
+                  className="lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer"
+                  onClick={(event) =>
+                    handleClick(event, match, match.awayTeamOdds)
+                  }
+                >
                   {match.awayTeamOdds.toFixed(2)}
                 </p>
               </div>
@@ -117,9 +160,3 @@ const Odd = ({ title, competition }) => {
 };
 
 export default Odd;
-
-{
-  /* <p className="pr-[10px]lg:text-[18px] text-[12px] md:text-[16px] cursor-pointer">
-  {isNaN(match.drawOdds) ? "-" : match.drawOdds.toFixed(2)}
-</p>; */
-}

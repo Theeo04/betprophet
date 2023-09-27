@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+// RiDeleteBin6Line
+import { AiOutlineDelete } from "react-icons/ai";
 
 function BettingContent() {
   const [betts, setBetts] = useState([]);
@@ -43,6 +45,15 @@ function BettingContent() {
     setUniqueBetts(uniqueMatches);
   }, [betts]);
 
+  const handleDeleteMatch = (matchIndex) => {
+    const updatedBetts = [...betts];
+    updatedBetts.splice(matchIndex, 1);
+
+    localStorage.setItem("yourBet", JSON.stringify(updatedBetts));
+
+    setBetts(updatedBetts);
+  };
+
   return (
     <div className="mt-[90px] bg-purple-600 ml-3">
       {uniqueBetts.map((bet, index) => (
@@ -52,10 +63,13 @@ function BettingContent() {
               {bet.home} - {bet.away}
             </p>
           </div>
-
           <p className="ml-2 text-[13px]">
             {bet.oddChoosed}: {bet.oddMatch.toFixed(2)}
           </p>
+          <AiOutlineDelete
+            className="ml-3 hover:cursor-pointer text-white text-[20px]"
+            onClick={() => handleDeleteMatch(index)}
+          />
         </div>
       ))}
     </div>

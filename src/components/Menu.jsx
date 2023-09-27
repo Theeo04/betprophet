@@ -7,7 +7,7 @@ import OddNFL from "./Odds/OddNFL";
 const Menu = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedMenuItem, setSelectedMenuItem] = useState("Tennis");
+  const [selectedMenuItem, setSelectedMenuItem] = useState("Football");
 
   // Check the screen size and update the state
   const checkScreenWidth = () => {
@@ -39,6 +39,12 @@ const Menu = () => {
     if (selectedMenuItem === "NFL") {
       return <OddNFL title={"NFL"} />;
     }
+    if (selectedMenuItem === "Basketball") {
+      return <Odd title={"Basketball"} competition={"basketball_nba"} />;
+    }
+    if (selectedMenuItem === "Baseball") {
+      return <Odd title={"Baseball"} competition={"baseball_mlb"} />;
+    }
     return null; // Render nothing by default
   };
 
@@ -56,7 +62,12 @@ const Menu = () => {
           >
             Football
           </button>
-          <button className="menu--element w-full">Basketball</button>
+          <button
+            className="menu--element w-full"
+            onClick={() => handleMenuItemClick("Basketball")}
+          >
+            Basketball
+          </button>
 
           <button
             className="menu--element w-full"
@@ -64,7 +75,12 @@ const Menu = () => {
           >
             NFL
           </button>
-          <button className="menu--element w-full">Box</button>
+          <button
+            className="menu--element w-full"
+            onClick={() => handleMenuItemClick("Baseball")}
+          >
+            Baseball
+          </button>
           <button className="menu--element w-full">Horse Racing</button>
           <button className="menu--element w-full">Slots</button>
           <button className="menu--element w-full">About Us</button>
@@ -86,8 +102,18 @@ const Menu = () => {
           >
             NFL
           </button>
-          <button className="menu--element w-full text-left">Basketball</button>
-          <button className="menu--element w-full text-left">NFL</button>
+          <button
+            className="menu--element w-full text-left"
+            onClick={() => handleMenuItemClick("Basketball")}
+          >
+            Basketball
+          </button>
+          <button
+            className="menu--element w-full text-left"
+            onClick={() => handleMenuItemClick("Baseball")}
+          >
+            Baseball
+          </button>
           <button className="menu--element w-full text-left">Box</button>
           <button className="menu--element w-full text-left">
             Horse Racing

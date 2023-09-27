@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { supabase } from "../../supabase";
+import { useRouter } from "next/router";
 
 export default function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +21,7 @@ export default function SignUpForm() {
         console.error("Error signing up:", error.message);
       } else {
         console.log("Sign up successful:", user);
-        // Redirect or perform other actions after successful signup.
+        router.push("/");
       }
     } catch (error) {
       console.error("Error signing up:", error.message);
@@ -27,43 +30,43 @@ export default function SignUpForm() {
 
   // ml-[1170px]
   return (
-    <div className="absolute popup z-50">
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+    <div className="flex justify-center">
+      <div className="flex flex-col ">
+        <h2 className="text-white text-[50px] mt-5 mb-6">
+          Create Your Account Now!
+        </h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+          <div className="mb-4 mt-3">
             <label
               htmlFor="email"
-              className="block text-gray-800 font-semibold"
+              className=" text-white font-semibold text-[20px] "
             >
               Email:
             </label>
             <input
               type="email"
               id="email"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded "
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-gray-800 font-semibold"
-            >
+
+          <div className="mb-4 flex flex-col  font-semibold text-[20px] mt-3">
+            <label htmlFor="password" className="text-white">
               Password:
             </label>
             <input
+              className="w-full p-2 border rounded "
               type="password"
               id="password"
-              className="w-full p-2 border rounded"
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full p-2 mt-4 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="w-full p-2 mt-4 bg-purple-500 text-white rounded hover:bg-purple-600"
           >
             Sign Up
           </button>

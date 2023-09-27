@@ -62,7 +62,7 @@ function Nav() {
   return (
     <div>
       <div>
-        <div className="flex space-x-[220px] 2xl:space-x-[960px] md:space-x-[450px] lg:space-x-[530px] xl:space-x-[860px] border-b border-gray-800">
+        <div className="flex space-x-[220px] 2xl:space-x-[650px] md:space-x-[450px] lg:space-x-[530px] xl:space-x-[860px] border-b border-gray-800">
           <img
             src="logo.png"
             className="w-[180px] h-auto ml-11 mt-1 lg:w-[250px]"
@@ -113,7 +113,11 @@ function Nav() {
         </div>
       </div>
       {isSignInModalOpen && (
-        <div className={`absolute ml-[1100px] ${user ? "hidden" : ""}`}>
+        <div
+          className={`absolute ml-[450px] md:ml-[650px] lg:ml-[900px] xl:ml-[1100px] 2xl:ml-[1050px] ${
+            user ? "hidden" : ""
+          }`}
+        >
           <div ref={modalRef} className="popup-content">
             <button className="close-modal" onClick={toggleSignInModal}>
               Close
