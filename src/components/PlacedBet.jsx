@@ -147,15 +147,22 @@ function PlacedBet({ isOpen, toggleOpen }) {
   //Create a post with User UID =>
   const sendBet = async () => {
     try {
-      const dataToAdd = {
-        allMatches: uniqueBetts,
-        bet: inputValue,
-        odd: totalBet.toFixed(2),
-      };
+      if (user) {
+        const dataToAdd = {
+          allMatches: uniqueBetts,
+          bet: inputValue,
+          odd: totalBet.toFixed(2),
+        };
 
-      const docRef = await addDoc(collection(db, `${user.id}`), dataToAdd);
+        const docRef = await addDoc(collection(db, `${user.id}`), dataToAdd);
 
-      console.log("Document written with ID: ", docRef.id);
+        console.log("Document written with ID: ", docRef.id);
+        localStorage.removeItem("yourBet");
+        setUniqueBetts([]);
+      } else {
+        // Alert the user if they are not logged in
+        window.alert("You must be logged in to place a bet.");
+      }
     } catch (e) {
       console.error("Error adding document: ", e);
     }

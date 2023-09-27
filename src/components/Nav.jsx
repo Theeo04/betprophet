@@ -77,23 +77,32 @@ function Nav() {
 
             <div className="flex ">
               <button
-                className="text-white text-[17px] font-[500] lg:text-[23px]"
+                className="text-white text-[15px] font-[500] lg:text-[20px]"
                 onClick={() => {
-                  toggleSignInModal(); // Always toggle the modal
+                  toggleSignInModal();
                   if (user) {
-                    router.push("/userProfile"); // If the user is authenticated, navigate to "/nume pagina"
+                    router.push("/userProfile");
                   }
                 }}
               >
-                {user ? user.user.email : "Log In"}
+                {user ? user.user.email : "User"}
               </button>
               <PiUserCircle className="text-white mt-[19px] ml-[5px] text-[22px] lg:text-[27px] lg:mt-[28px] lg:ml-2" />
             </div>
 
             <div className="flex">
-              <button className="text-white text-[17px] font-[500] lg:text-[23px] ">
-                {user ? "" : "Register"}
-              </button>
+              {user ? (
+                ""
+              ) : (
+                <button
+                  onClick={() => {
+                    router.push("/register");
+                  }}
+                  className="text-white text-[17px] font-[500] lg:text-[23px]"
+                >
+                  Register
+                </button>
+              )}
               {user ? (
                 ""
               ) : (
